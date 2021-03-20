@@ -21,7 +21,7 @@ export class DataService {
   id:any;
   msgs: Message[] = [];
 
-  constructor(private db:AngularFirestore,private friebase: AngularFireDatabase,public  afAuth:  AngularFireAuth, public  router:  Router) { }
+  constructor(private dbb:AngularFireDatabase,private db:AngularFirestore,private friebase: AngularFireDatabase,public  afAuth:  AngularFireAuth, public  router:  Router) { }
 
 signOutUser() {
   firebase.auth().signOut();
@@ -55,4 +55,14 @@ getUser(){
  return this.users;
 }
 
+save(product:any,date:any,datefin){
+  console.log(product.nom);
+  let obj={
+     debut:date,
+     deadline:datefin,
+     tache:product.tache,
+     detail:product.detail
+   }
+   this.dbb.list('users').update(product.$key,obj);
+}
 }

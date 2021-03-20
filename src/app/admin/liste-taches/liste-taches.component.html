@@ -15,9 +15,9 @@
             <th>Detail</th>
             <th>Etat</th>
             <th>Progression</th>
-            <th>Deadline</th>
+            <th colspan="2" style="text-align: center;">Deadline</th>
             <th></th>
-        </tr>
+        </tr> 
     </ng-template>
     <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="product">
@@ -64,14 +64,14 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <span class="bg-danger text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression==0">pas de tache</span>
-                        <span class="bg-warning text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression>0 && product.progression<=50">en cours</span>
+                        <span class="bg-danger text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.tache==''">pas de tache</span>
+                        <span class="bg-warning text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression<=50 && product.tache!=''">en cours</span>
                         <span class="bg-primary text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression>50 && product.progression<100">presque finis</span>
                         <span class="bg-success text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression==100">tache finis</span>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        <span class="bg-danger text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression==0">pas de tache</span>
-                        <span class="bg-warning text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression>0 && product.progression<=50">en cours</span>
+                        <span class="bg-danger text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.tache==''">pas de tache</span>
+                        <span class="bg-warning text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression<=50 && product.tache!=''">en cours</span>
                         <span class="bg-primary text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression>50 && product.progression<100">presque finis</span>
                         <span class="bg-success text-white" style="padding: 5px;border-radius: 1em;" *ngIf="product.progression==100">tache finis</span>
                     </ng-template>
@@ -90,16 +90,27 @@
             <td>
                 <p-cellEditor>
                     <ng-template pTemplate="input">
-                        <input pInputText type="text" [(ngModel)]="product.deadline">
+                        <p-calendar [(ngModel)]="date3" dateFormat="dd/mm/yy" inputId="icon"></p-calendar>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{product.deadline}}
+                        {{product.debut}}
                     </ng-template>
                 </p-cellEditor>
+            </td> 
+            <td>
+                <p-cellEditor>
+                <ng-template pTemplate="input">
+                    <p-calendar [(ngModel)]="dateFin" dateFormat="dd/mm/yy" inputId="icon"></p-calendar>
+                </ng-template>
+                <ng-template pTemplate="output">
+                    {{product.deadline}}
+                </ng-template>
+                </p-cellEditor>
             </td>
-            <td style="text-align:center">
-                <button pButton pRipple *ngIf="!editing" type="button" icon="pi pi-pencil"  pInitEditableRow (click)="onRowEditInit(product)" class="p-button-rounded p-button-outlined p-button-warning"></button>
-                <button pButton pRipple  *ngIf="editing" type="button" icon="pi pi-check" pSaveEditableRow (click)="onRowEditSave(product)" class="p-button-rounded p-button-outlined p-button-success"></button>
+            <td style="display: flex;justify-content: center;">
+                <button style="margin-right:15px;" pButton pRipple *ngIf="!editing" type="button" icon="pi pi-pencil"  pInitEditableRow (click)="onRowEditInit(product)" class="p-button-rounded p-button-outlined p-button-warning"></button>
+                <button pButton pRipple *ngIf="!editing" type="button" icon="pi pi-trash"  pSaveEditableRow (click)="onRowDrop(product)" class="p-button-rounded p-button-outlined p-button-danger"></button>
+                <button style="margin-right:15px;" pButton pRipple *ngIf="editing" type="button" icon="pi pi-check" pSaveEditableRow (click)="onRowEditSave(product)" class="p-button-rounded p-button-outlined p-button-success"></button>
                 <button *ngIf="editing" pButton pRipple type="button" icon="pi pi-times"pCancelEditableRow (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-danger p-button-outlined"></button>
             </td>
         </tr>

@@ -17,7 +17,8 @@ export class ListeTachesComponent implements OnInit {
   clonedProducts: { [s: string]: any; } = {};
   users:AngularFireList<any>;
   allUsers:any[]=[];
-
+  date3:Date;
+  dateFin:Date;
   constructor(private messageService:MessageService,private db:AngularFirestore,private dataService:DataService,private dbb:AngularFireDatabase) { }
  
   ngOnInit() {
@@ -38,18 +39,27 @@ export class ListeTachesComponent implements OnInit {
 }
 
 onRowEditSave(product: any) {
-  console.log(product.nom);
-  let obj={
-     deadline:product.deadline,
-     tache:product.tache,
-     detail:product.detail
-   }
-   this.dbb.list('/users').update(product.$key,obj);
+  let datedeb=this.date3.getDate()+"/"+this.date3.getMonth()+"/"+this.date3.getFullYear();
+  let datefin=this.dateFin.getDate()+"/"+this.dateFin.getMonth()+"/"+this.dateFin.getFullYear();
+   this.dataService.save(product,datedeb,datefin);
    this.messageService.add({severity:'success', summary: ' Message', detail:'tache ajouté'}); 
 }
 
 onRowEditCancel(product: any, index: number) {
     this.allUsers[index] = this.clonedProducts[product.id];
     this.messageService.add({severity:'info', summary: ' Message', detail:'Annulé'}); 
+}
+
+onRowDrop(product:any){
+  let obj={
+    deadline:"",
+    tache:"",
+    detail:"",
+    debut:"",
+    progression:0
+  }
+  this.dbb.list('/users').update(product.$key,obj);
+  this.messageService.add({severity:'success', summary: ' Message', detail:'Vous avez supprimé cette tache'}); 
+  
 }
 }

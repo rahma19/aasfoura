@@ -22,12 +22,12 @@ export class SignupComponent implements OnInit {
   }
   
   Submit(form) {
-  //if(form.value.email!="" && form.value.password!="")
    this.dbb.list('/users').push({
       nom:form.value.nom,
       prenom:form.value.prenom,
       email:form.value.email,
       password:form.value.password,
+      debut:"",
       deadline:"",
       tache:"",
       detail:"",

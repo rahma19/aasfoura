@@ -21,6 +21,7 @@ import {ToastModule} from 'primeng/toast';
 import { DataService } from './data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ButtonModule} from 'primeng/button';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import {ButtonModule} from 'primeng/button';
     ErreurComponent
   ],
   imports: [
-    BrowserModule,FormsModule,ProgressBarModule,ToastModule,BrowserAnimationsModule,
+    BrowserModule,FormsModule,ProgressBarModule,ToastModule,BrowserAnimationsModule,CalendarModule,
     AppRoutingModule,TableModule,AngularFireStorageModule,AngularFireAuthModule,AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig,"stage-5af26"),ButtonModule
   ],
