@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Message, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { DataService } from 'src/app/data.service';
 
 
@@ -9,7 +9,7 @@ import { DataService } from 'src/app/data.service';
   selector: 'app-liste-taches',
   templateUrl: './liste-taches.component.html',
   styleUrls: ['./liste-taches.component.css'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 
 })
 export class ListeTachesComponent implements OnInit {
@@ -19,7 +19,7 @@ export class ListeTachesComponent implements OnInit {
   allUsers:any[]=[];
   date3:Date;
   dateFin:Date;
-  constructor(private messageService:MessageService,private db:AngularFirestore,private dataService:DataService,private dbb:AngularFireDatabase) { }
+  constructor(private confirmationService: ConfirmationService,private messageService:MessageService,private db:AngularFirestore,private dataService:DataService,private dbb:AngularFireDatabase) { }
  
   ngOnInit() {
     var x= this.dataService.getUser();
@@ -58,8 +58,20 @@ onRowDrop(product:any){
     debut:"",
     progression:0
   }
-  this.dbb.list('/users').update(product.$key,obj);
+  console.log(product.$key,obj);
+  this.confirmationService.confirm({
+      message: 'Voulez vous supprimer cette tache?',
+      header: 'Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.dbb.list('/users').update(product.$key,obj);
   this.messageService.add({severity:'success', summary: ' Message', detail:'Vous avez supprimé cette tache'}); 
+   },
+      reject: () => {
+        this.messageService.add({severity:'info', summary: ' Message', detail:'Annulation'}); 
+
+      }
+  });
   
 }
 }
